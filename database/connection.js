@@ -1,4 +1,4 @@
-const mysql = requirq('mysql')
+const mysql = require('mysql')
 
 // koneksi ke database
 const conn = mysql.createConnection({
