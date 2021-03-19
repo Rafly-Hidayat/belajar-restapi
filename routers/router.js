@@ -5,4 +5,10 @@ module.exports = (app) => {
 
     app.route('/')
         .get(jsonku.index)
+
+    app.route('/mahasiswa')
+        .get(jsonku.mhs)
+    
+    app.route('/mahasiswa/:id')
+        .get(jsonku.tampilmhsid)
 }
