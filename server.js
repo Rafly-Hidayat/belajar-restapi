@@ -9,11 +9,6 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-const myLogger = (req, res, next) => {
-  req.time = new Date()
-  next()
-}
-
 
 app.listen(port, () => {
   console.log(`Server is running!`)
