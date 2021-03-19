@@ -1,14 +1,17 @@
 'use strict'
 
 module.exports = (app) => {
-    const jsonku = require('../controller/controller')
+    const mhsController = require('../controller/controller')
 
     app.route('/')
-        .get(jsonku.index)
+        .get(mhsController.index)
 
     app.route('/mahasiswa')
-        .get(jsonku.mhs)
+        .get(mhsController.mhs)
     
     app.route('/mahasiswa/:id')
-        .get(jsonku.tampilmhsid)
+        .get(mhsController.tampilmhsid)
+
+    app.route('/tambah')
+        .post(mhsController.tambah)
 }

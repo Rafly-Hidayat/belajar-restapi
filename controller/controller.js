@@ -21,8 +21,8 @@ module.exports = {
     },
 
     // menampilkan tabel mahasiswa berdasarkan id
-    tampilmhsid: (req, res) =>{
-        let id = req.params.id
+    tampilmhsid: (req, res) => {
+        const id = req.params.id
         connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa = ?', (id), (e, rows, fields) =>{
             if(e){
                 console.log(e)
@@ -32,7 +32,20 @@ module.exports = {
         })
     },
 
-
+    // menambahkan data mahasiswa
+    tambah: (req, res) => {
+        let nrp =req.body.nrp 
+        let nama =req.body.nama 
+        let jurusan =req.body.jurusan
+        
+        connection.query('INSERT INTO mahasiswa (nrp, nama, jurusan) VALUES(?,?,?) ',[nrp, nama, jurusan], (e, rows, fields) => {
+            if(e){
+                console.log(e)
+            } else {
+                response.ok('Data berhasil di tambahkan!', res)
+            }
+        })
+    }
 
 
 
