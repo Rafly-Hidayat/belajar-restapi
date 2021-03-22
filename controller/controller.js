@@ -39,12 +39,29 @@ module.exports = {
         let jurusan = req.body.jurusan
         
         connection.query('INSERT INTO mahasiswa (nrp, nama, jurusan) VALUES(?,?,?) ',[nrp, nama, jurusan], (e) => {
-                if (e) {
-                    console.log(e);
-                } else {
-                    response.ok('Data berhasil di tambahkan!', res);
-                }
-            })
+            if (e) {
+                console.log(e);
+            } else {
+                response.ok('Data berhasil di tambahkan!', res);
+            }
+        })
+    },
+    
+    // mengubah data berdasarkan id
+    ubah: (req, res) => {
+        const id = req.params.id
+        let nrp = req.body.nrp 
+        let nama = req.body.nama 
+        let jurusan = req.body.jurusan
+
+        connection.query('UPDATE mahasiswa SET nrp=?, nama=?, jurusan=? WHERE id_mahasiswa=?', [nrp, nama, jurusan, id], (e, rows) => {
+            if(e) {
+                console.log(e)
+            } else {
+                response.ok('Data berhasil di ubah!', res)
+            }
+        })
+        
     }
 
 
