@@ -1,17 +1,15 @@
 'use strict'
 
-module.exports = (app) => {
-    const mhsController = require('../controller/controller')
+const express = require('express')
+const router = express.Router()
+const mhsController = require('../controller/controller')
 
-    app.route('/')
-        .get(mhsController.index)
+    router.get('/', mhsController.index)
 
-    app.route('/mahasiswa')
-        .get(mhsController.mhs)
+    router.get('/mahasiswa', mhsController.mhs)
     
-    app.route('/mahasiswa/:id')
-        .get(mhsController.tampilmhsid)
+    router.get('/mahasiswa/:id', mhsController.tampilmhsid)
 
-    app.route('/tambah')
-        .post(mhsController.tambah)
-}
+    router.post('/tambah', mhsController.tambah)
+
+module.exports = router

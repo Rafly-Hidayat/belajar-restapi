@@ -11,7 +11,7 @@ module.exports = {
 
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
-        connection.query('SELECT * FROM mahasiswa', (e, rows, fields) => {
+        connection.query('SELECT * FROM mahasiswa', (e, rows,) => {
             if(e){
                 console.log(e)
             } else {
@@ -23,7 +23,7 @@ module.exports = {
     // menampilkan tabel mahasiswa berdasarkan id
     tampilmhsid: (req, res) => {
         const id = req.params.id
-        connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa = ?', (id), (e, rows, fields) =>{
+        connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa = ?', (id), (e, rows,) =>{
             if(e){
                 console.log(e)
             } else {
@@ -34,17 +34,17 @@ module.exports = {
 
     // menambahkan data mahasiswa
     tambah: (req, res) => {
-        let nrp =req.body.nrp 
-        let nama =req.body.nama 
-        let jurusan =req.body.jurusan
+        let nrp = req.body.nrp 
+        let nama = req.body.nama 
+        let jurusan = req.body.jurusan
         
-        connection.query('INSERT INTO mahasiswa (nrp, nama, jurusan) VALUES(?,?,?) ',[nrp, nama, jurusan], (e, rows, fields) => {
-            if(e){
-                console.log(e)
-            } else {
-                response.ok('Data berhasil di tambahkan!', res)
-            }
-        })
+        connection.query('INSERT INTO mahasiswa (nrp, nama, jurusan) VALUES(?,?,?) ',[nrp, nama, jurusan], (e) => {
+                if (e) {
+                    console.log(e);
+                } else {
+                    response.ok('Data berhasil di tambahkan!', res);
+                }
+            })
     }
 
 
