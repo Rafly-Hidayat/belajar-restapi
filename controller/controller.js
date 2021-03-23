@@ -5,66 +5,67 @@ const connection = require('../database/connection')
 
 
 module.exports = {
-    index: (req, res) => {
-        resposnse.ok('Aplikasi REST API berjalan', res)
-    },
 
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
         connection.query('SELECT * FROM mahasiswa', (e, rows,) => {
-            if(e){
-                console.log(e)
-            } else {
-                response.ok(rows, res)
-            }
+            if(e) throw(e)
+
+            response.ok(rows, res)
         })
     },
 
     // menampilkan tabel mahasiswa berdasarkan id
     tampilmhsid: (req, res) => {
         const id = req.params.id
-        connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa = ?', (id), (e, rows,) =>{
-            if(e){
-                console.log(e)
-            } else {
-                response.ok(rows, res)
-            }
+        connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa = ?', id, (e, rows,) =>{
+            if(e) throw(e)
+
+            response.ok(rows, res)
         })
     },
 
     // menambahkan data mahasiswa
     tambah: (req, res) => {
-        let nrp = req.body.nrp 
-        let nama = req.body.nama 
-        let jurusan = req.body.jurusan
-        
-        connection.query('INSERT INTO mahasiswa (nrp, nama, jurusan) VALUES(?,?,?) ',[nrp, nama, jurusan], (e) => {
-            if (e) {
-                console.log(e);
-            } else {
-                response.ok('Data berhasil di tambahkan!', res);
-            }
+        const data = {
+            nrp: req.body.nrp,
+            nama: req.body.nama,
+            jurusan: req.body.jurusan
+        }
+        connection.query('INSERT INTO mahasiswa SET ? ', data , (e) => {
+            if(e) throw(e)
+
+            response.ok("Data berhasil di tambahkan", data, res)
         })
     },
     
     // mengubah data berdasarkan id
     ubah: (req, res) => {
         const id = req.params.id
-        let nrp = req.body.nrp 
-        let nama = req.body.nama 
-        let jurusan = req.body.jurusan
+        const data = {
+            nrp: req.body.nrp,
+            nama: req.body.nama,
+            jurusan: req.body.jurusan
+        }
 
-        connection.query('UPDATE mahasiswa SET nrp=?, nama=?, jurusan=? WHERE id_mahasiswa=?', [nrp, nama, jurusan, id], (e, rows) => {
-            if(e) {
-                console.log(e)
-            } else {
-                response.ok('Data berhasil di ubah!', res)
-            }
+        connection.query('UPDATE mahasiswa SET ? WHERE id_mahasiswa=?', [data,id] , (e) => {
+            if(e) throw (e)
+
+            response.ok("Data berhasil di ubah", res)
         })
         
+    },
+
+    // menghapus data berdasarkan id
+    hapus: (req, res) => {
+        const id = req.params.id
+        
+        connection.query('DELETE FROM mahasiswa WHERE id_mahasiswa = ?', id , (e) =>{
+            if(e) throw (e)
+
+            response.ok("Data berhasil di hapus", res)
+        })
     }
-
-
 
 
 }

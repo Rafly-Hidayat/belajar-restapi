@@ -5,12 +5,14 @@ const router = express.Router()
 const mhsController = require('../controller/controller')
 
 
-    router.get('/mahasiswa', mhsController.mhs)
+    router.route('/mahasiswa')  
+        .get(mhsController.mhs)
+        .post(mhsController.tambah)
     
     router.get('/mahasiswa/:id', mhsController.tampilmhsid)
 
-    router.post('/mahasiswa/tambah', mhsController.tambah)
-
-    router.put('/mahasiswa/ubah/:id', mhsController.ubah)
+    router.put('/mahasiswa/:id', mhsController.ubah)
+    
+    router.delete('/mahasiswa/:id', mhsController.hapus)
 
 module.exports = router
