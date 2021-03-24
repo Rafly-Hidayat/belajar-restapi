@@ -42,6 +42,14 @@ module.exports = {
             if(e) throw(e)
             mahasiswa.ok("Data berhasil di hapus", res)
         })
+    },
+
+    // tampilkan matakuliah yang di ambil mahasiswa
+    matakuliah: (req, res) => {
+        mahasiswa.getmatakuliah(req.con, (e, rows) => {
+            if(e) throw(e)
+            mahasiswa.nes(rows, res)
+        })
     }
 
 
