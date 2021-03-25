@@ -83,6 +83,10 @@ module.exports = {
                  res.json({error: true, message: "Email atau Password salah"});
             }
         })
+    },
+
+    halamanadmin: (req, res) => {
+        response.ok("Ini adalah halaman Admin", res)
     }
 
 
