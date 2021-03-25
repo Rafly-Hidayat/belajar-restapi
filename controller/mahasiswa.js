@@ -16,7 +16,12 @@ module.exports = {
     tampilmhsid: (req, res) => {
         mahasiswa.getbyid(req.con, req.params.id, (e, rows) => {
             if(e) throw (e)
-            mahasiswa.ok(rows, res)
+            if(rows.length > 0){
+                mahasiswa.ok(rows, res)
+            } else {
+                mahasiswa.ok("Data tidak di temukan", res)
+                // res.send("Data tidak di temukan")
+            }
         })
     },
 
