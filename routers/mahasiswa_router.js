@@ -19,5 +19,7 @@ const auth = require('../middleware/auth')
     router.get('/matakuliah', mhsController.matakuliah)
 
     router.post('/register', auth.register)
+    
+    router.post('/login', auth.login)
 
     module.exports = router

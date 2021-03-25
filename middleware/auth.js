@@ -2,7 +2,7 @@ const con = require('../config/db')
 const mysql = require('mysql')
 const md5 = require('MD5')
 const jwt = require('jsonwebtoken')
-const secret = require('../config/secret')
+const config = require('../config/secret')
 const ip = require('ip')
 const response = require('../models/res')
 
@@ -39,6 +39,50 @@ module.exports = {
             }
         })
 
+    },
+
+    login: (req, res) => {
+        const post = {
+            password: req.body.password,
+            email: req.body.email
+        }
+
+        let query = "SELECT * FROM ?? WHERE ??=? AND ??=?"
+        let table = ["user", "password", md5(post.password), "email", post.email]
+
+        query = mysql.format(query, table)
+
+        con.query(query, (e, rows) => {
+            if(e) throw(e)
+            if(rows.length == 1){
+                let token = jwt.sign({rows}, config.secret, {expiresIn: 1800})
+
+                id_user = rows[0].id
+
+                const data = {
+                    id_user: id_user,
+                    akses_token: token,
+                    alamat_ip: ip.address()
+                }
+
+                let query = "INSERT INTO ?? SET ?"
+                let table = ["akses_token"]
+
+                query = mysql.format(query, table)
+                con.query(query, data, (e, rows) => {
+                    if(e) throw(e)
+                     res.json({
+                         status: true,
+                         message: "Berhasil menggenerate token",
+                         token: token,
+                         user: data.id_user
+                     })
+                })
+
+            } else {
+                 res.json({error: true, message: "Email atau Password salah"});
+            }
+        })
     }
 
 
