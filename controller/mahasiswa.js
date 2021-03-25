@@ -1,6 +1,7 @@
 'use strict';
 
 const mahasiswa = require('../models/Mahasiswa_model')
+const response = require('../models/res')
 
 module.exports = {
 
@@ -8,7 +9,7 @@ module.exports = {
     mhs: (req, res) => {
         mahasiswa.get(req.con, (e, rows) => {
             if(e) throw (e)
-            mahasiswa.ok(rows, res)
+            response.ok(rows, res)
         })
     },
 
@@ -17,9 +18,9 @@ module.exports = {
         mahasiswa.getbyid(req.con, req.params.id, (e, rows) => {
             if(e) throw (e)
             if(rows.length > 0){
-                mahasiswa.ok(rows, res)
+                response.ok(rows, res)
             } else {
-                mahasiswa.ok("Data tidak di temukan", res)
+                response.ok("Data tidak di temukan", res)
                 // res.send("Data tidak di temukan")
             }
         })
@@ -29,7 +30,7 @@ module.exports = {
     tambah: (req, res) => {
         mahasiswa.create(req.con, req.body, (e, rows) => {
             if(e) throw(e)
-            mahasiswa.ok("Data berhasil di tambahkan", res)
+            response.ok("Data berhasil di tambahkan", res)
         })
     },
     
@@ -37,7 +38,7 @@ module.exports = {
     ubah: (req, res) => {
         mahasiswa.update(req.con, req.body, req.params.id, (e) => {
             if(e) throw(e)
-            mahasiswa.ok("Data berhasil di ubah", res)
+            response.ok("Data berhasil di ubah", res)
         })
     },
 
@@ -45,7 +46,7 @@ module.exports = {
     hapus: (req, res) => {
         mahasiswa.delete(req.con, req.params.id, (e) => {
             if(e) throw(e)
-            mahasiswa.ok("Data berhasil di hapus", res)
+            response.ok("Data berhasil di hapus", res)
         })
     },
 
@@ -53,7 +54,7 @@ module.exports = {
     matakuliah: (req, res) => {
         mahasiswa.getmatakuliah(req.con, (e, rows) => {
             if(e) throw(e)
-            mahasiswa.nes(rows, res)
+            response.nes(rows, res)
         })
     }
 

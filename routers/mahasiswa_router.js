@@ -3,6 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const mhsController = require('../controller/mahasiswa')
+const auth = require('../middleware/auth')
 
 
     router.get('/mahasiswa', mhsController.mhs)
@@ -16,5 +17,7 @@ const mhsController = require('../controller/mahasiswa')
     router.delete('/hapus/:id', mhsController.hapus)
     
     router.get('/matakuliah', mhsController.matakuliah)
+
+    router.post('/register', auth.register)
 
     module.exports = router
