@@ -17,7 +17,7 @@ module.exports = {
             password: md5(req.body.password),
             role: req.body.role,
             tanggal_daftar: new Date()
-        }
+        } 
 
         let query = "SELECT email FROM ?? WHERE ??=?"
         let table = ["user", "email", post.email]
@@ -55,7 +55,7 @@ module.exports = {
         con.query(query, (e, rows) => {
             if(e) throw(e)
             if(rows.length == 1){
-                let token = jwt.sign({rows}, config.secret, {expiresIn: 1800})
+                let token = jwt.sign({rows}, config.secret, {expiresIn: 300})
 
                 id_user = rows[0].id
 
@@ -87,8 +87,11 @@ module.exports = {
 
     halamanadmin: (req, res) => {
         response.ok("Ini adalah halaman Admin", res)
+    },
+    
+    halamanuser: (req, res) => {
+        response.ok("Ini adalah halaman User", res)
     }
-
 
 
 }
