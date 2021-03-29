@@ -15,9 +15,9 @@ module.exports = {
             username: req.body.username,
             email: req.body.email,
             password: md5(req.body.password),
-            role: req.body.role,
+            role: 2,
             tanggal_daftar: new Date()
-        } 
+        }
 
         let query = "SELECT email FROM ?? WHERE ??=?"
         let table = ["user", "email", post.email]
