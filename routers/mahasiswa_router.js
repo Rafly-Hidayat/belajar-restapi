@@ -15,6 +15,4 @@ const mhsController = require('../controller/mahasiswa')
     
     router.delete('/hapus/:id', mhsController.hapus)
     
-    router.get('/matakuliah', mhsController.matakuliah)
-
 module.exports = router

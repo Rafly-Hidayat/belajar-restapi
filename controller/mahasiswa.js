@@ -21,7 +21,6 @@ module.exports = {
                 response.ok(rows, res)
             } else {
                 response.ok("Data tidak di temukan", res)
-                // res.send("Data tidak di temukan")
             }
         })
     },
@@ -48,15 +47,6 @@ module.exports = {
             if(e) throw(e)
             response.ok("Data berhasil di hapus", res)
         })
-    },
-
-    // tampilkan matakuliah yang di ambil mahasiswa
-    matakuliah: (req, res) => {
-        mahasiswa.getmatakuliah(req.con, (e, rows) => {
-            if(e) throw(e)
-            response.nes(rows, res)
-        })
     }
-
 
 }

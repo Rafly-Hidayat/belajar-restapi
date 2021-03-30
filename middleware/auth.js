@@ -19,26 +19,36 @@ module.exports = {
             tanggal_daftar: new Date()
         }
 
+        con.beginTransaction( (e) => {
+            if(e) throw (e)
+
         let query = "SELECT email FROM ?? WHERE ??=?"
         let table = ["user", "email", post.email]
 
         query = mysql.format(query, table)
+        
+            con.query(query, (e, rows) => {
+                if(e) { con.rollback(()=>{throw e}) }
 
-        con.query(query, (e, rows) => {
-            if(e) throw (e)
-            if(rows.length == 0){
-                let query = "INSERT INTO ?? SET ?"
-                let table = ["user"]
-                query = mysql.format(query, table)
-                con.query(query, post, (e, rows) => {
-                    if(e) throw(e)
-                    response.ok("Berhasil menambahkan user baru", res)
-                })
-            } else {
-                response.ok("Email sudah terdaftar!", res)
-            }
+                if(rows.length == 0){
+                    let query = "INSERT INTO ?? SET ?"
+                    let table = ["user"]
+                    query = mysql.format(query, table)
+                    con.query(query, post, (e, rows) => {
+                        if(e) { con.rollback(()=>{throw e}) }
+                        response.ok("Berhasil menambahkan user baru", res)
+                    })
+
+                } else {
+                    response.ok("Email sudah terdaftar!", res)
+                }
+
+            })
+            con.commit( (e) => {
+                if(e) { con.rollback(()=>{throw e}) }
+                con.end()
+            })
         })
-
     },
 
     login: (req, res) => {

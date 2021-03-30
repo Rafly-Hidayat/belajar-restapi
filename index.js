@@ -1,6 +1,7 @@
 const express = require('express')
 const routerMhs = require('./routers/mahasiswa_router')
 const routerAuth = require('./routers/auth_router')
+const routerMtklh = require('./routers/matakuliah_router')
 const app = express()
 const port = 3000
 const con = require('./config/db')
@@ -19,6 +20,7 @@ app.use(function(req, res, next) {
 
 app.use(routerMhs)
 app.use(routerAuth)
+app.use(routerMtklh)
 
 app.listen(port, () => {
   console.log(`Server is running!`)
