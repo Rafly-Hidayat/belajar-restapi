@@ -1,5 +1,6 @@
 'use strict';
 
+const con = require('../config/db')
 const mahasiswa = require('../models/Mahasiswa_model')
 const response = require('../models/res')
 
@@ -7,7 +8,10 @@ module.exports = {
 
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
-        mahasiswa.get(req.con, (e, rows) => {
+        const page = req.query.page
+        const limit = 2
+        let offset = (page-1)*limit
+        mahasiswa.get(req.con, limit, offset, (e, rows) => {
             if(e) throw (e)
             response.ok(rows, res)
         })
@@ -27,26 +31,26 @@ module.exports = {
 
     // menambahkan data mahasiswa
     tambah: (req, res) => {
-        mahasiswa.create(req.con, req.body, (e, rows) => {
-            if(e) throw(e)
-            response.ok("Data berhasil di tambahkan", res)
-        })
+            mahasiswa.create(req.con, req.body, (e, rows) => {
+                if(e) throw(e)
+                response.ok("Data berhasil di tambahkan", res)
+            })
     },
     
     // mengubah data berdasarkan id
     ubah: (req, res) => {
-        mahasiswa.update(req.con, req.body, req.params.id, (e) => {
-            if(e) throw(e)
-            response.ok("Data berhasil di ubah", res)
-        })
+            mahasiswa.update(req.con, req.body, req.params.id, (e) => {
+                if(e) throw(e)
+                response.ok("Data berhasil di ubah", res)
+            })
     },
 
     // menghapus data berdasarkan id
     hapus: (req, res) => {
-        mahasiswa.delete(req.con, req.params.id, (e) => {
-            if(e) throw(e)
-            response.ok("Data berhasil di hapus", res)
-        })
+            mahasiswa.delete(req.con, req.params.id, (e) => {
+                if(e) throw(e)
+                response.ok("Data berhasil di hapus", res)
+            })
     }
 
 }

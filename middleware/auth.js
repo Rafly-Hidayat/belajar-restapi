@@ -19,13 +19,10 @@ module.exports = {
             tanggal_daftar: new Date()
         }
 
-        con.beginTransaction( (e) => {
-            if(e) throw (e)
+            let query = "SELECT email FROM ?? WHERE ??=?"
+            let table = ["user", "email", post.email]
 
-        let query = "SELECT email FROM ?? WHERE ??=?"
-        let table = ["user", "email", post.email]
-
-        query = mysql.format(query, table)
+            query = mysql.format(query, table)
         
             con.query(query, (e, rows) => {
                 if(e) { con.rollback(()=>{throw e}) }
@@ -42,13 +39,7 @@ module.exports = {
                 } else {
                     response.ok("Email sudah terdaftar!", res)
                 }
-
             })
-            con.commit( (e) => {
-                if(e) { con.rollback(()=>{throw e}) }
-                con.end()
-            })
-        })
     },
 
     login: (req, res) => {

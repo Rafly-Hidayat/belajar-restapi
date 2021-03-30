@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-    get: (con, callback) => {
-        con.query('SELECT * FROM mahasiswa', callback)
+    get: (con, limit, offset, callback) => {
+        con.query(`SELECT * FROM mahasiswa LIMIT ${limit} OFFSET ${offset}`, callback)
     },
 
     getbyid: (con, id, callback) => {

@@ -4,7 +4,7 @@ const res = require('../models/res')
 
 module.exports = {
 
-    // tampilkan matakuliah yang di ambil mahasiswa
+    // tampilkan KRS mahasiswa
     index: (req, res) => {
         matakuliah.getmatakuliah(req.con, (e, rows) => {
             if(e) throw(e)
@@ -12,7 +12,7 @@ module.exports = {
         })
     },
 
-    // tampilkan matakuliah berdasarkan id
+    // tampilkan KRS mahasiswa berdasarkan id
     tampilbyid: (req, res) => {
         matakuliah.getbyid(req.con, req.params.id, (e, rows) => {
             if(e) throw (e)
@@ -20,7 +20,7 @@ module.exports = {
         })
     },
 
-    // nambah matakuliah
+    // tambah matakuliah di KRS mahasiswa
     tambah: (req, res) => {
         matakuliah.create(req.con, req.body, (e, rows) => {
             if(e) throw(e)
