@@ -1,6 +1,5 @@
 'use strict';
 
-const con = require('../config/db')
 const mahasiswa = require('../models/Mahasiswa_model')
 const response = require('../models/res')
 
@@ -9,7 +8,7 @@ module.exports = {
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
         const page = req.query.page
-        const limit = 2
+        const limit = req.query.page
         let offset = (page-1)*limit
         mahasiswa.get(req.con, limit, offset, (e, rows) => {
             if(e) throw (e)
