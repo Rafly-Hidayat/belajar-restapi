@@ -7,10 +7,18 @@ module.exports = {
 
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
-        const page = req.query.page
-        const limit = req.query.page
+        let page = req.query.page
+        if (page  == 0){
+            page = 1 
+        }
+
+        let limit = req.query.limit
+        if (limit  == 0){
+            limit = 3 
+        }
+
         let offset = (page-1)*limit
-        mahasiswa.get(req.con, limit, offset, (e, rows) => {
+        mahasiswa.get(req.con, req.query, limit, offset, (e, rows) => {
             if(e) throw (e)
             response.ok(rows, res)
         })

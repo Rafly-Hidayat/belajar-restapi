@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-    get: (con, limit, offset, callback) => {
-        con.query(`SELECT * FROM mahasiswa LIMIT ${limit} OFFSET ${offset}`, callback)
+    get: (con, data, limit, offset, callback) => {
+        con.query(`SELECT * FROM mahasiswa WHERE nama LIKE '%${data}%' OR nrp LIKE '%${data}%' OR jurusan LIKE '%${data.search}%' ORDER BY ${data.orderBy} ASC LIMIT ${limit} OFFSET ${offset} `, callback)
     },
 
     getbyid: (con, id, callback) => {
