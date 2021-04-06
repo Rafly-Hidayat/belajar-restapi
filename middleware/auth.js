@@ -1,5 +1,4 @@
 const con = require('../config/db')
-const mysql = require('mysql')
 const md5 = require('MD5')
 const jwt = require('jsonwebtoken')
 const config = require('../config/secret')
@@ -11,35 +10,47 @@ module.exports = {
 
     // controller register
     register: (req, res) => {
-        const post = {
-            username: req.body.username,
-            email: req.body.email,
-            password: md5(req.body.password),
-            role: 2,
-            tanggal_daftar: new Date()
-        }
+        con.beginTransaction((e) => {
+            if (e) throw e
 
-            let query = "SELECT email FROM ?? WHERE ??=?"
-            let table = ["user", "email", post.email]
+            const post = {
+                username: req.body.username,
+                email: req.body.email,
+                password: md5(req.body.password),
+                tanggal_daftar: new Date()
+            }
 
-            query = mysql.format(query, table)
-        
-            con.query(query, (e, rows) => {
-                if(e) throw e
+                con.query('SELECT email FROM user WHERE email = ?', [post.email], (e, rows) => {
+                    if(e) throw e
 
-                if(rows.length == 0){
-                    let query = "INSERT INTO ?? SET ?"
-                    let table = ["user"]
-                    query = mysql.format(query, table)
-                    con.query(query, post, (e, rows) => {
-                        if(e) throw e
-                        response.ok("Berhasil menambahkan user baru", res)
-                    })
+                    if(rows.length == 0){
+                        con.query('INSERT INTO user SET ?', [post], (e, rows) => {
+                            if(e) throw e
 
-                } else {
-                    response.ok("Email sudah terdaftar!", res)
-                }
-            })
+                            con.query('SELECT * FROM role WHERE id = 2', (e, result) => {
+                                if (e) throw e
+                                let roleID = result.map((obj) => {
+                                    return obj.id
+                                })
+                                con.query('INSERT INTO role_user (role_id, email) VALUES (?,?)', [roleID,post.email], (e) => {
+                                    if (e) throw e
+                                    response.ok("Berhasil menambahkan user baru", res)
+                                    con.commit((e)=> {
+                                        if (e){
+                                            con.rollback()
+                                            throw e
+                                        }
+                                    })
+                                })
+                            })
+                        })
+
+                    } else {
+                        response.ok("Email sudah terdaftar!", res)
+                        con.rollback()
+                    }
+                })
+        })
     },
 
     login: (req, res) => {
@@ -48,12 +59,7 @@ module.exports = {
             email: req.body.email
         }
 
-        let query = "SELECT * FROM ?? WHERE ??=? AND ??=?"
-        let table = ["user", "password", md5(post.password), "email", post.email]
-
-        query = mysql.format(query, table)
-
-        con.query(query, (e, rows) => {
+        con.query('SELECT * FROM user WHERE password = ? AND email = ?',[md5(post.password), post.email], (e, rows) => {
             if(e) throw(e)
             if(rows.length == 1){
                 let token = jwt.sign({rows}, config.secret, {expiresIn: 300})
@@ -66,11 +72,7 @@ module.exports = {
                     alamat_ip: ip.address()
                 }
 
-                let query = "INSERT INTO ?? SET ?"
-                let table = ["akses_token"]
-
-                query = mysql.format(query, table)
-                con.query(query, data, (e, rows) => {
+                con.query('INSERT INTO akses_token SET ?', [data], (e, rows) => {
                     if(e) throw(e)
                      res.json({
                          status: true,
