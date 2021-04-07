@@ -6,9 +6,9 @@ const auth = require('../middleware/auth')
 const verifikasi = require('../middleware/verifikasi')
 const validation = require('../validation/validation')
 
-    router.post('/register', validation.registerMhs, auth.register)
+    router.post('/register', validation.register, auth.register)
     
-    router.post('/login', auth.login)
+    router.post('/login', validation.login, auth.login)
     
     router.get('/admin', verifikasi.verifikasiAdmin(), auth.halamanadmin)
     

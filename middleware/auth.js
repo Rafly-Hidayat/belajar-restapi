@@ -20,19 +20,28 @@ module.exports = {
                 tanggal_daftar: new Date()
             }
 
-                con.query('SELECT email FROM user WHERE email = ?', [post.email], (e, rows) => {
-                    if(e) throw e
+            con.query('SELECT email FROM user WHERE email = ?', [post.email], (e, rows) => {
+                if(e) throw e
 
-                    if(rows.length == 0){
-                        con.query('INSERT INTO user SET ?', [post], (e, rows) => {
-                            if(e) throw e
+                if(rows.length == 0){
+                    con.query('INSERT INTO user SET ?', [post], (e, rows) => {
+                        if(e) throw e
 
-                            con.query('SELECT * FROM role WHERE id = 2', (e, result) => {
+                        con.query('SELECT * FROM role WHERE id = 2', (e, result) => {
+                            if (e) throw e
+                            let roleID = result.map((obj) => {
+                                return obj.id
+                            })
+
+                            con.query('SELECT * FROM user WHERE email = ?', [post.email], (e, rows) => {
                                 if (e) throw e
-                                let roleID = result.map((obj) => {
-                                    return obj.id
-                                })
-                                con.query('INSERT INTO role_user (role_id, email) VALUES (?,?)', [roleID,post.email], (e) => {
+                                id_user = rows[0].id
+
+                                const data = {
+                                    id_user: id_user
+                                }
+
+                                con.query('INSERT INTO role_user (role_id, user_id, email) VALUES (?,?,?)', [roleID, data.id_user, post.email], (e) => {
                                     if (e) throw e
                                     response.ok("Berhasil menambahkan user baru", res)
                                     con.commit((e)=> {
@@ -44,12 +53,13 @@ module.exports = {
                                 })
                             })
                         })
+                    })
 
-                    } else {
-                        response.ok("Email sudah terdaftar!", res)
-                        con.rollback()
-                    }
-                })
+                } else {
+                    response.ok("Email sudah terdaftar!", res)
+                    con.rollback()
+                }
+            })
         })
     },
 
@@ -91,7 +101,7 @@ module.exports = {
     halamanadmin: (req, res) => {
         response.ok("Ini adalah halaman Admin", res)
     },
-    
+
     halamanuser: (req, res) => {
         response.ok("Ini adalah halaman User", res)
     }

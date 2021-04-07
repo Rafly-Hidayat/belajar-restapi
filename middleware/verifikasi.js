@@ -7,14 +7,18 @@ function verifikasiAdmin () {
         return (req, rest, next) => {
             con.query('SELECT * FROM role', (e, result) => {
                 if (e) throw e
+
                 let Admin = result.map((obj) => {
                     return obj.Admin
                 })
+
                 const role = Admin
+
                 // cek authorization
                 const tokenBearer = req.headers.authorization
                 if(tokenBearer){
                     const token = tokenBearer.split(' ')[1]
+
                     // verifikasi
                     jwt.verify(token, config.secret, (e, decoded) => {
                         if(e) {
@@ -22,7 +26,7 @@ function verifikasiAdmin () {
                         } else {
                             if(role == Admin){
                                 req.auth = decoded
-                                next() 
+                                next()
                             } else {
                                 return rest.status(401).send({auth: false, message: "Halaman ini bukan untuk anda"})                        
                             }
@@ -39,10 +43,13 @@ function verifikasiAdmin () {
             return (req, rest, next) => {
                 con.query('SELECT * FROM role', (e, result) => {
                     if (e) throw e
+
                     let User = result.map((obj) => {
                         return obj.User
                     })
+
                     const role = User
+
                     // cek authorization
                     const tokenBearer = req.headers.authorization
                     if(tokenBearer){

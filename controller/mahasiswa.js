@@ -8,16 +8,12 @@ module.exports = {
     // menampilkan tabel mahasiswa
     mhs: (req, res) => {
         let page = req.query.page
-        if (page  == 0){
-            page = 1 
-        }
+        if (page  == 0){ page = 1 }
 
         let limit = req.query.limit
-        if (limit  == 0){
-            limit = 3 
-        }
+        if (limit  == 0){ limit = 3 }
 
-        let offset = (page-1)*limit
+        let offset = ( page - 1 ) * limit
         mahasiswa.get(req.con, req.query, limit, offset, (e, rows) => {
             if(e) throw (e)
             response.ok(rows, res)
