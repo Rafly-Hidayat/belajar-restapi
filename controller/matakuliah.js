@@ -1,12 +1,11 @@
 const response = require('../models/res')
-const matakuliah = require('../models/Matakuliah_model')
-const res = require('../models/res')
+const krs = require('../models/Matakuliah_model')
 
 module.exports = {
 
     // tampilkan KRS mahasiswa
     index: (req, res) => {
-        matakuliah.getmatakuliah(req.con, (e, rows) => {
+        krs.getKrs(req.con, (e, rows) => {
             if(e) throw(e)
             response.nes(rows, res)
         })
@@ -14,7 +13,7 @@ module.exports = {
 
     // tampilkan KRS mahasiswa berdasarkan id
     tampilbyid: (req, res) => {
-        matakuliah.getbyid(req.con, req.params.id, (e, rows) => {
+        krs.getbyid(req.con, req.params.id, (e, rows) => {
             if(e) throw (e)
             rows.length > 0 ? response.nes(rows, res) : response.ok("Id tidak di temukan", res)
         })
@@ -22,9 +21,17 @@ module.exports = {
 
     // tambah matakuliah di KRS mahasiswa
     tambah: (req, res) => {
-        matakuliah.create(req.con, req.body, (e, rows) => {
+        krs.create(req.con, req.body, e => {
             if(e) throw(e)
             response.ok("Berhasil menambahkan KRS mahasiswa", res)
+        })
+    },
+
+    // hapus matakuliah di krs mahasiswa
+    hapus: (req,res) => {
+        krs.update(req.con, req.body, req.params.id, e => {
+            if(e) throw e
+            response.ok("Berhasil menghapus matakuliah di krs mahasiswa", res)
         })
     }
 

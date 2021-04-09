@@ -29,9 +29,7 @@ module.exports = {
 
                         con.query('SELECT * FROM role WHERE id = 2', (e, result) => {
                             if (e) throw e
-                            let roleID = result.map((obj) => {
-                                return obj.id
-                            })
+                            let roleID = result.map(obj => obj.id )
 
                             con.query('SELECT * FROM user WHERE email = ?', [post.email], (e, rows) => {
                                 if (e) throw e
