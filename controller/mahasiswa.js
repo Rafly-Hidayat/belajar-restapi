@@ -19,6 +19,20 @@ module.exports = {
             response.ok(rows, res)
         })
     },
+    
+    orderByASC: (req, res) => {
+        mahasiswa.ASC(req.con, req.query, (e, rows) => {
+            if(e) throw e
+            response.ok(rows, res)
+        })
+    },
+    
+    orderByDESC: (req, res) => {
+        mahasiswa.DESC(req.con, req.query, (e, rows) => {
+            if(e) throw e
+            response.ok(rows, res)
+        })
+    },
 
     // menampilkan tabel mahasiswa berdasarkan id
     tampilmhsid: (req, res) => {
