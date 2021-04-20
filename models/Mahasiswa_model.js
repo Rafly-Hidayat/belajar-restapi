@@ -2,7 +2,7 @@
 
 module.exports = {
     get: (con, data, limit, offset, callback) => {
-        con.query(`SELECT * FROM mahasiswa WHERE nama LIKE '%${data.search}%' OR nrp LIKE '%${data.search}%' OR jurusan LIKE '%${data.search}%' LIMIT ${limit} OFFSET ${offset} `, callback)
+        con.query(`SELECT * FROM mahasiswa WHERE nama LIKE '%${data.search}%' OR nrp LIKE '%${data.search}%' OR jurusan LIKE '%${data.search}%' ORDER BY ${data.orderBy} ASC LIMIT ${limit} OFFSET ${offset} `, callback)
     },
 
     ASC: (con, data, callback) => {
